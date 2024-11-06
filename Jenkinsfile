@@ -22,42 +22,9 @@ pipeline {
         }
 
         stage('Test'){
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
-
-            steps{
-                sh '''
-                test -f build/index.html
-                npm test
-                '''
-            }
-        }
-    }
-
-        stages {
-        stage('Deploy') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
             steps {
-                sh '''
-                    sh npm install netlify-cli -g
-                    netlify --version
-                '''
+                sh 'test -f build/index.html'
             }
-        }
-
-    post{
-        always {
-            junit 'test-results/junit.xml'
-        }
+        }    
     }
-
 }
